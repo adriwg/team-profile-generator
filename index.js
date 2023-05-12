@@ -84,17 +84,54 @@ const question_menu = [{
     choices: ['Add an engineer', 'Add an intern', 'Finish building the team']
 }];
 
-// Holds the team employees
-const employee = [];
+// Object holds the team employees
+const employee = {
+    manager: [],
+    engineer: [],
+    intern: []
+};
 
 const askQuestions = (quest_set) => {
+    inquirer.prompt(quest_set)
+        .then((answers) => {
+            console.log(answers);
+            if (quest_set === question_manager) {
+                employee.manager.push(answers);
+                askQuestions(question_menu);
+            } else if (quest_set === question_engineer) {
+                employee.engineer.push(answers);
+                askQuestions(question_menu);
+            } else if (quest_set === question_intern) {
+                employee.intern.push(answers);
+                askQuestions(question_menu);
+            } else if (quest_set === question_menu) {
+                if (answers.option == 'Add an engineer') {
+                    askQuestions(question_engineer);
+                } else if (answers.option == 'Add an intern') {
+                    askQuestions(question_intern);
+                } else if (answers.option == 'Finish building the team') {
+                    console.log("finish building the team");
+                    //render(employee);
+                }
+            }
+            console.log(employee);
+        });
+
+};
+
+/* const askQuestions = (quest_set) => {
     const all_questions = [...quest_set, ...question_menu];
     console.log(all_questions);
     inquirer.prompt(all_questions).then((answers) => {
         console.log(answers);
+        if (answers.option === 'Add an engineer') {
+            employee.engineer.push(delete answers.option);
+            askQuestions(question_engineer);
+        }else{
 
+        }
     });
 
-};
+}; */
 
 askQuestions(question_manager);
