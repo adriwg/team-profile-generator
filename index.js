@@ -10,7 +10,7 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./src/page-template.js");
 
-// Question sets
+// Question set for manager
 const question_manager = [{
         type: 'input',
         name: 'manager_name',
@@ -33,6 +33,7 @@ const question_manager = [{
     }
 ];
 
+//Question set for engineer
 const question_engineer = [{
         type: 'input',
         name: 'engineer_name',
@@ -55,6 +56,7 @@ const question_engineer = [{
     }
 ];
 
+// Question set for intern
 const question_intern = [{
         type: 'input',
         name: 'intern_name',
@@ -77,6 +79,8 @@ const question_intern = [{
     }
 ];
 
+
+// Question set for menu
 const question_menu = [{
     type: 'list',
     name: 'option',
@@ -84,25 +88,22 @@ const question_menu = [{
     choices: ['Add an engineer', 'Add an intern', 'Finish building the team']
 }];
 
-// Object holds the team employees
-const employee = {
-    manager: [],
-    engineer: [],
-    intern: []
-};
+// Array  holds the team employees
+const team = [];
 
+// Ask questions function for different sets of questions
 const askQuestions = (quest_set) => {
     inquirer.prompt(quest_set)
         .then((answers) => {
             console.log(answers);
             if (quest_set === question_manager) {
-                employee.manager.push(answers);
+                team.push(new Manager(answers.manager_name, answers.manager_id, answers.manager_email, answers.manager_office_number));
                 askQuestions(question_menu);
             } else if (quest_set === question_engineer) {
-                employee.engineer.push(answers);
+                team.push(new Engineer(answers.engineer_name, answers.engineer_id, answers.engineer_email, answers.engineer_github));
                 askQuestions(question_menu);
             } else if (quest_set === question_intern) {
-                employee.intern.push(answers);
+                team.push(new Intern(answers.intern_name, answers.intern_id, answers.intern_email, answers.intern_school));
                 askQuestions(question_menu);
             } else if (quest_set === question_menu) {
                 if (answers.option == 'Add an engineer') {
@@ -110,28 +111,21 @@ const askQuestions = (quest_set) => {
                 } else if (answers.option == 'Add an intern') {
                     askQuestions(question_intern);
                 } else if (answers.option == 'Finish building the team') {
-                    console.log("finish building the team");
-                    //render(employee);
+                    writeFile();
                 }
             }
-            console.log(employee);
         });
-
 };
 
-/* const askQuestions = (quest_set) => {
-    const all_questions = [...quest_set, ...question_menu];
-    console.log(all_questions);
-    inquirer.prompt(all_questions).then((answers) => {
-        console.log(answers);
-        if (answers.option === 'Add an engineer') {
-            employee.engineer.push(delete answers.option);
-            askQuestions(question_engineer);
-        }else{
+// Write file function
+const writeFile = () => {
+    // Make an output directory if it doesn't exist
+    if (!fs.existsSync(OUTPUT_DIR)) {
+        fs.mkdirSync(OUTPUT_DIR);
+    }
+    fs.writeFile(outputPath, render(team), (error) => error ? console.error(error) : console.log("team is successfully created!"));
+};
 
-        }
-    });
 
-}; */
-
+// Init 
 askQuestions(question_manager);
