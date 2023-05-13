@@ -4,7 +4,7 @@
 
 The Team Profile Generator is a command-line application that allows you to easily create a webpage containing basic information about your team. By providing details for the manager and team members, the application generates a webpage that displays essential information about each team member. This makes it convenient for the manager to access and share the team's information.
 
-[Sample of generated webpage](https://adriwg.github.io/team-profile-generator/output/team.html)
+[Sample of generated webpage] (https://adriwg.github.io/team-profile-generator/output/team.html)
 
 ## Installation
 
