@@ -27,7 +27,7 @@ const validateAlphanumericHyphens = val => /^[a-zA-Z0-9-]+$/.test(val) || 'Pleas
 const question_manager = [{
         type: 'input',
         name: 'manager_name',
-        message: 'Please build your team.\nWhat is the name of the manager?',
+        message: 'Build your team.\nWhat is the name of the manager?',
         validate: validate_no_numbers
     },
     {
@@ -109,7 +109,7 @@ const question_intern = [{
 const question_menu = [{
     type: 'list',
     name: 'option',
-    message: 'Please select what type of employee you would like to add?',
+    message: 'Please choose the type of team member you wish to add:',
     choices: ['Add an engineer', 'Add an intern', 'Finish building the team']
 }];
 
@@ -120,7 +120,6 @@ const team = [];
 const askQuestions = (quest_set) => {
     inquirer.prompt(quest_set)
         .then((answers) => {
-            console.log(answers);
             if (quest_set === question_manager) {
                 team.push(new Manager(answers.manager_name, answers.manager_id, answers.manager_email, answers.manager_office_number));
                 askQuestions(question_menu);
